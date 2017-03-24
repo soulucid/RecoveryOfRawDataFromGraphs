@@ -1,0 +1,17 @@
+package test;
+
+import org.opencv.imgproc.*;
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+
+public class DisplayImage
+{
+
+    public static void main(String[] args)
+    {
+        // TODO Auto-generated method stub
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        
+    }
+
+}

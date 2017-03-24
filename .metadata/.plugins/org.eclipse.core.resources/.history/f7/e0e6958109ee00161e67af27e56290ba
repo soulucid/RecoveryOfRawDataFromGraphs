@@ -1,0 +1,70 @@
+package test;
+
+import java.awt.FlowLayout;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+import org.opencv.core.Core;
+import org.opencv.core.CvType;
+import org.opencv.core.Mat;
+import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.imgproc.Imgproc;
+
+public class DisplayImage
+{
+
+    public static void main(String[] args)
+    {
+        // TODO Auto-generated method stub
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        
+        Mat image = Imgcodecs.imread("Images/line-chart.png");
+        System.out.println("The channel: " + image.channels());
+
+        
+        int bufferSize1 = image.channels()*image.rows()*image.cols();
+        byte[] b1 = new byte[bufferSize1];
+        image.get(0, 0, b1);
+        BufferedImage bfimage = new BufferedImage(image.cols(), image.rows(), BufferedImage.TYPE_3BYTE_BGR);
+        final byte[] targetPixels = ((DataBufferByte) bfimage.getRaster().getDataBuffer()).getData();
+        System.arraycopy(b1, 0, targetPixels, 0, b1.length);
+        showImage(bfimage);
+        
+        Imgproc.cvtColor(image, image, Imgproc.COLOR_BGR2GRAY);
+//        System.out.println("Success\n");
+//        System.out.println("The channel number of gray mat: " + grayMat.channels());
+//        int bufferSize2 = grayMat.channels()*grayMat.rows()*grayMat.cols();
+//        byte[] b2 = new byte[bufferSize2];
+//        grayMat.get(0, 0, b2);
+//        BufferedImage bfimage2 = new BufferedImage(grayMat.cols(), grayMat.rows(), BufferedImage.TYPE_BYTE_GRAY);
+//        final byte[] tarPi = ((DataBufferByte) bfimage2.getRaster().getDataBuffer()).getData();
+//        System.arraycopy(b2, 0, tarPi, 0, b2.length);
+//        showImage(bfimage2);
+        
+        
+        
+        
+        
+        
+        
+    }
+    
+    protected static void showImage(BufferedImage bfimage){
+        
+        ImageIcon icon = new ImageIcon(bfimage);
+        JFrame frame = new JFrame();
+        frame.setLayout(new FlowLayout());
+        frame.setSize(bfimage.getWidth(null)+50, bfimage.getHeight(null)+50);
+        JLabel jlb = new JLabel();
+        jlb.setIcon(icon);
+        frame.add(jlb);
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+    }
+
+}

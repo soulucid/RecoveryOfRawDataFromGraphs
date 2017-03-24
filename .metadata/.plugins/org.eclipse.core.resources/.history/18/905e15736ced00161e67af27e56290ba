@@ -1,0 +1,58 @@
+package test;
+
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfByte;
+import org.opencv.core.Size;
+import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.imgproc.Imgproc;
+
+public class DisplayImage
+{
+
+    public static void main(String[] args)
+    {
+        // TODO Auto-generated method stub
+
+        String imageName = "/home/FianlProject/FinalProject/workspace/DataExtractor/Images/1-s2.0-S1093326316302364-main-IMG1.jpg";
+        Mat img = Imgcodecs.imread(imageName);
+        
+        if (img.empty()){
+            
+            System.err.println("Can not load image " + imageName);
+            
+        }
+        
+       showResult(img);
+        
+    }
+    
+    public static void showResult(Mat img) {
+        
+        Imgproc.resize(img, img, new Size(640, 480));
+        MatOfByte matOfByte = new MatOfByte();
+        Imgcodecs.imencode(".jpg", img, matOfByte);
+        byte[] byteArray = matOfByte.toArray();
+        BufferedImage bufImage = null;
+        try {
+            InputStream in = new ByteArrayInputStream(byteArray);
+            bufImage = ImageIO.read(in);
+            JFrame frame = new JFrame();
+            frame.getContentPane().add(new JLabel(new ImageIcon(bufImage)));
+            frame.pack();
+            frame.setVisible(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+    }
+
+}

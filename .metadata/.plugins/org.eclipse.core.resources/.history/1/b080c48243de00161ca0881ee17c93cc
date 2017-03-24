@@ -1,0 +1,64 @@
+/***
+ * 
+ * @author Yingyi Zhang
+ * @username yxz559
+ * @studentID 1544458
+ * 
+ */
+
+package controller;
+
+import java.io.File;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.pdfbox.pdmodel.PDDocument;
+
+public class PDFExtracter {
+
+    public static void main(String[] args) throws Exception {
+        
+        try {
+            
+            String sourcePath = "/home/FinalProject/FinalProject/workspace/PDFs/1-s2.0-S1093326316302364-main.pdf";
+            String destinationDir = "/home/FinalProject/FinalProject/workspace/Images";
+            
+            File originPDF = new File(sourcePath);
+            if (originPDF.exists()) {
+                
+                PDDocument document = PDDocument.load(sourcePath);
+                List<PDPage> list =   document.getDocumentCatalog().getAllPages();
+                String fileName = oldFile.getName().replace(".pdf", "_cover");
+                int totalImages = 1;
+                for (PDPage page : list) {
+                   PDResources pdResources = page.getResources();
+                   Map pageImages = pdResources.getXObjects();
+                    if (pageImages != null){
+                      Iterator imageIter = pageImages.keySet().iterator();
+                      while (imageIter.hasNext()){
+                      String key = (String) imageIter.next();
+                      Object obj = pageImages.get(key);
+
+                      if(obj instanceof PDXObjectImage) {
+               PDXObjectImage pdxObjectImage = (PDXObjectImage) obj;
+
+                         pdxObjectImage.write2file(destinationDir + fileName+ "_" + totalImages);
+
+                     totalImages++;
+                      }
+                      }
+                    }
+               }
+        }  else {
+                    System.err.println("File not exist");
+                       }  
+}
+catch (Exception e){
+
+    System.err.println(e.getMessage());
+ }
+
+    }
+
+}

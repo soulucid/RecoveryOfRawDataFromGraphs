@@ -1,0 +1,56 @@
+package test;
+
+import java.awt.FlowLayout;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+import org.opencv.core.Core;
+import org.opencv.core.Mat;
+import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.imgproc.Imgproc;
+
+public class DisplayImage
+{
+
+    public static void main(String[] args)
+    {
+        // TODO Auto-generated method stub
+        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        Mat image = Imgcodecs.imread("Images/line-chart.png");
+        int type = BufferedImage.TYPE_BYTE_GRAY;
+        if(image.channels() > 1) {
+            
+            type = BufferedImage.TYPE_3BYTE_BGR;
+            
+        }
+        
+        int bufferSize = image.channels()*image.rows()*image.cols();
+        byte[] b = new byte[bufferSize];
+        image.get(0, 0, b);
+        
+        Mat grayMat = new Mat();
+        Imgproc.cvtColor(image, grayMat, Imgproc.COLOR_RGB2GRAY);
+        
+        BufferedImage bfimage = new BufferedImage(grayMat.cols(), grayMat.rows(), BufferedImage.TYPE_BYTE_GRAY);
+        final byte[] targetPixels = ((DataBufferByte) bfimage.getRaster().getDataBuffer()).getData();
+        System.arraycopy(b, 0, targetPixels, 0, b.length);
+        
+        
+        
+        ImageIcon icon = new ImageIcon(bfimage);
+        JFrame frame = new JFrame();
+        frame.setLayout(new FlowLayout());
+        frame.setSize(bfimage.getWidth(null)+50, bfimage.getHeight(null)+50);
+        JLabel jlb = new JLabel();
+        jlb.setIcon(icon);
+        frame.add(jlb);
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+    }
+
+}
