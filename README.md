@@ -1,7 +1,5 @@
 /**
- * 
  * @author Yingyi Zhang
- * 
  */
 
 
