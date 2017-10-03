@@ -1,8 +1,6 @@
 /**
  * 
  * @author Yingyi Zhang
- * @username yxz559
- * @studentID 1544458
  * 
  */
 
